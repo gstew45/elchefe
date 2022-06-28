@@ -1,11 +1,15 @@
 using ElChefe.Application;
 using ElChefe.Infrastructure;
+using ElChefe.WebAPI.Errors;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ProblemDetailsFactory, ElChefeProblemDetailsFactory>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -14,19 +18,21 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+WebApplication app = builder.Build();
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseExceptionHandler("/error");
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.MapControllers();
 }
 
-app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var authResult = _authenticationService.Register(
+        AuthenticationResult authResult = _authenticationService.Register(
             request.FirstName,
             request.LastName,
             request.Email,
@@ -37,7 +37,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = _authenticationService.Login(
+        AuthenticationResult authResult = _authenticationService.Login(
             request.Email,
             request.Password);
 

@@ -6,7 +6,8 @@ namespace ElChefe.Infrastructure.Persistance;
 
 public class UserRepository : IUserRepository
 {
-	public readonly static List<User> _users = new();
+	private static readonly List<User> _users = new();
+	
 	public void Add(User user)
 	{
 		_users.Add(user);

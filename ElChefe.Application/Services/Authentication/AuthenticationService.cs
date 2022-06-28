@@ -18,16 +18,12 @@ public class AuthenticationService : IAuthenticationService
 	public AuthenticationResult Login(string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not User user)
-		{
             throw new Exception("User with given email does not exist.");
-		}
 
         if (user.Password != password)
-		{
             throw new Exception("Password is invalid.");
-		}
 
-        var token = _jwtTokenGenerator.GenerateToken(user);
+        string token = _jwtTokenGenerator.GenerateToken(user);
 
         return new AuthenticationResult(user, token);
     }
@@ -35,9 +31,7 @@ public class AuthenticationService : IAuthenticationService
     public AuthenticationResult Register(string firstName, string lastName, string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not null)
-		{
             throw new Exception("User with given email already exists.");
-		}
 
         var user = new User
         {

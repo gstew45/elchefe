@@ -16,7 +16,7 @@ public class RecipeController : ControllerBase
 	}
 	
 	[HttpPost("add")]
-	public IActionResult Create(RecipeRequest request)
+	public IActionResult Create([FromBody] RecipeRequest request)
 	{
 		RecipeResult recipeResult = _recipeService.Create(request.Name, request.Description);
 
